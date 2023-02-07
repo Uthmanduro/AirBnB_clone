@@ -30,4 +30,3 @@ if __name__ == "__main__":
     uthman = BaseModel()
     print(uthman.created_at)
     print(uthman)
-
