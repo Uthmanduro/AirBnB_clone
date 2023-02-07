@@ -28,7 +28,6 @@ class BaseModel:
         return files
 
 
-
 if __name__ == "__main__":
     uthman = BaseModel()
     print(uthman)
