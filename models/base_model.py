@@ -2,6 +2,7 @@
 """defines the class BaseModel"""
 from datetime import datetime
 import uuid
+from models import storage
 
 
 class BaseModel:
@@ -9,15 +10,17 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """initialize the instance attributes"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
         if kwargs is not None:
             kwargs.pop('__class__', None)
             for key, value in kwargs.items():
                 if key in ["created_at", "updated_at"]:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 setattr(self, key, value)
+                return
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        storage.new(self)
 
     # basic class methods
     def __str__(self):
@@ -28,6 +31,7 @@ class BaseModel:
     def save(self):
         """update the updated_at atrr with the current datetime"""
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of __dict__"""
