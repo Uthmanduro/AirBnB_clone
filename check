@@ -1,0 +1,14 @@
+#!/bin/bash
+# A simple bash script to run a check on pycodestyle
+# against all directories that has py files in it.
+# This list is meant to be updated on demand.
+#
+# A check can be run simply by doing the following command
+# from the repository root directory:
+# $ ./check
+# 
+# No output means all files checked in the listed directories
+# are good.
+
+pycodestyle ./models/*.py
+pycodestyle ./tests/tests_models/*.py
