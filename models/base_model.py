@@ -10,7 +10,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """initialize the instance attributes"""
-        
+
         if len(kwargs) != 0:
             kwargs.pop('__class__', None)
             for key, value in kwargs.items():
