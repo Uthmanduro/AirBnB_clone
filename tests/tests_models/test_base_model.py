@@ -20,11 +20,11 @@ class Test_BaseModel(unittest.TestCase):
 
     def test_instance_created_at_is_str(self):
         base1 = BaseModel()
-        self.assertEqual(type(base1.created_at), str)
+        self.assertEqual(type(base1.created_at), datetime)
 
     def test_instance_updated_at_is_str(self):
         base1 = BaseModel()
-        self.assertEqual(type(base1.updated_at), str)
+        self.assertEqual(type(base1.updated_at), datetime)
 
     def test_save_method(self):
         from time import sleep

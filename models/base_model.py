@@ -10,8 +10,8 @@ class BaseModel:
     def __init__(self):
         """initialize the instance attributes"""
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.now().isoformat()
-        self.updated_at = datetime.now().isoformat()
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
 
     def __str__(self):
         """return the string representation of an object"""
@@ -20,10 +20,12 @@ class BaseModel:
 
     def save(self):
         """update the updated_at atrr with the current datetime"""
-        self.updated_at = datetime.now().isoformat()
+        self.updated_at = datetime.now()
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of __dict__"""
         _dict = {"__class__": self.__class__.__name__}
         _dict.update(self.__dict__)
+        _dict["created_at"] = self.created_at.isoformat()
+        _dict["updated_at"] = self.updated_at.isoformat()
         return _dict
