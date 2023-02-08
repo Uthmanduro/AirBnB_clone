@@ -47,3 +47,27 @@ class Test_BaseModel(unittest.TestCase):
         self.assertTrue("created_at" in base1.to_dict())
         self.assertTrue("updated_at" in base1.to_dict())
         self.assertTrue("name" in base1.to_dict())
+
+    def test_new_instance_from_dictionary(self):
+        base1 = BaseModel()
+        model_json = base1.to_dict()
+        base2 = BaseModel(**model_json)
+        self.assertFalse(base1 is base2)
+
+    def test_new_instance_datetime_variables(self):
+        base1 = BaseModel()
+        model_json = base1.to_dict()
+        base2 = BaseModel(**model_json)
+        self.assertEqual(type(base2.created_at), datetime)
+        self.assertEqual(type(base2.updated_at), datetime)
+
+    def test_new_instance_properties_against_old(self):
+        base1 = BaseModel()
+        base1.name = "New_Instance"
+        model_json = base1.to_dict()
+        base2 = BaseModel(**model_json)
+        self.assertEqual(type(base1), type(base2))
+        self.assertEqual(base1.id, base2.id)
+        self.assertEqual(base1.created_at, base2.created_at)
+        self.assertEqual(base1.updated_at, base2.updated_at)
+        self.assertEqual(base1.name, base2.name)
