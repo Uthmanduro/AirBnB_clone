@@ -100,11 +100,9 @@ class HBNBCommand(cmd.Cmd):
             key = "{}.{}".format(argv[0], argv[1])
             try:
                 del objs[key]
-                del storage
                 storage = FileStorage()
                 for key, value in objs.items():
-                    tmp = BaseModel(**value)
-                    storage.new(tmp)
+                    storage.new(BaseModel(**value))
                 storage.save()
             except KeyError:
                 print("** no instance found **")
@@ -128,6 +126,44 @@ class HBNBCommand(cmd.Cmd):
                 tmp = BaseModel(**value)
                 return_list.append(tmp.__str__())
             print(return_list)
+
+    def do_update(self, line):
+        """
+        update <class> <instance id> <attribute name> <attribute value>:
+        Updates matching instance with a new or existing attribute.
+
+        valid <classes>: ['BaseModel']
+        """
+        argv = line.split()
+        if len(argv) == 0:
+            print("** class name missing **")
+        elif len(argv) >= 1 and argv[0] != "BaseModel":
+            print("** class doesn't exist **")
+        elif len(argv) == 1:
+            print("** instance id missing **")
+        elif len(argv) == 2:
+            print("** attribute name missing **")
+        elif len(argv) == 3:
+            print("** value missing **")
+        else:
+            # Update macthing instance while assuming:
+            # + arguments are always in the right order
+            # + Each arguments are separated by a space
+            # + String argument with a space must be between quotes
+            #
+            storage = FileStorage()
+            storage.reload()
+            objs = storage.all()
+            key = "{}.{}".format(argv[0], argv[1])
+            obj = objs[key]
+            obj = BaseModel(**obj)
+            obj.__dict__[argv[2]] = argv[3]
+            obj.save()
+            objs[key] = obj.to_dict()
+            storage = FileStorage()
+            for key, value in objs.items():
+                storage.new(BaseModel(**value))
+            storage.save()
 
 
 if __name__ == '__main__':
