@@ -109,6 +109,26 @@ class HBNBCommand(cmd.Cmd):
             except KeyError:
                 print("** no instance found **")
 
+    def do_all(self, line):
+        """
+        all <class>: Prints a list containing string representation
+        of all instances in the storage path.
+        
+        valid <classes>: ['BaseModel']
+        """
+        argv = line.split()
+        if len(argv) >= 1 and argv[0] != "BaseModel":
+            print("** class doesn't exist **")
+        else:
+            # Print a list containing all string representation...
+            return_list = []
+            storage.reload()
+            objs = storage.all()
+            for key, value in objs.items():
+                tmp = BaseModel(**value)
+                return_list.append(tmp.__str__())
+            print(return_list)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
