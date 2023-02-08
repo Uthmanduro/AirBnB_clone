@@ -16,7 +16,7 @@ class BaseModel:
     def __str__(self):
         """return the string representation of an object"""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
-                                 self.__dict__)
+                                     self.__dict__)
 
     def save(self):
         """update the updated_at atrr with the current datetime"""
@@ -24,6 +24,6 @@ class BaseModel:
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of __dict__"""
-        _dict = {"__class__":self.__class__.__name__}
+        _dict = {"__class__": self.__class__.__name__}
         _dict.update(self.__dict__)
         return _dict
