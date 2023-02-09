@@ -19,11 +19,15 @@ class HBNBCommand(cmd.Cmd):
     
     # Instance do_*() methods
     def do_quit(self, line):
-        """`quit` | `EOF`: command exits the program."""
+        """
+        `quit` | `EOF`: command exits the program.
+        """
         return True
 
     def do_EOF(self, line):
-        """`EOF` | `quit`: command exits the program."""
+        """
+        `EOF` | `quit`: command exits the program.
+        """
         return True
 
     def do_create(self, line):
@@ -155,7 +159,9 @@ class HBNBCommand(cmd.Cmd):
                 objs = storage.all()
                 key = "{}.{}".format(argv[0], argv[1])
                 obj = objs[key]
-                obj.__dict__[argv[2]] = argv[3]
+                var = obj.__dict__[argv[2]]
+                var = var.__class__.__name__
+                obj.__dict__[argv[2]] = eval("{}(\"{}\")".format(var, argv[3]))
                 obj.save()
             except KeyError:
                 print("** no instance found **")
