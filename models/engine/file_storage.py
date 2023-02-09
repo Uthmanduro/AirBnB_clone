@@ -43,6 +43,8 @@ class FileStorage:
         exception should be raised."""
         try:
             with open(self.__file_path, "r", encoding="utf-8") as fi:
+                from models.base_model import BaseModel
+                from models.user import User
                 objs = json.loads(fi.read())
                 self.__objects = {}
                 for key, obj in objs.items():

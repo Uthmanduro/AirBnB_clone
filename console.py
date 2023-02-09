@@ -4,6 +4,7 @@
 
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 from models.engine.file_storage import FileStorage
 
@@ -64,7 +65,6 @@ class HBNBCommand(cmd.Cmd):
             key = "{}.{}".format(argv[0], argv[1])
             try:
                 obj = objs[key]
-                obj = BaseModel(**obj)
                 print(obj)
             except KeyError:
                 print("** no instance found **")
@@ -99,10 +99,10 @@ class HBNBCommand(cmd.Cmd):
             objs = storage.all()
             key = "{}.{}".format(argv[0], argv[1])
             try:
-                del objs[key]
+                objs.pop(key, "None")
                 storage = FileStorage()
-                for key, value in objs.items():
-                    storage.new(BaseModel(**value))
+                for key, obj in objs.items():
+                    storage.new(obj)
                 storage.save()
             except KeyError:
                 print("** no instance found **")
@@ -122,9 +122,8 @@ class HBNBCommand(cmd.Cmd):
             return_list = []
             storage.reload()
             objs = storage.all()
-            for key, value in objs.items():
-                tmp = BaseModel(**value)
-                return_list.append(tmp.__str__())
+            for key, objs in objs.items():
+                return_list.append(objs.__str__())
             print(return_list)
 
     def do_update(self, line):
@@ -156,14 +155,8 @@ class HBNBCommand(cmd.Cmd):
                 objs = storage.all()
                 key = "{}.{}".format(argv[0], argv[1])
                 obj = objs[key]
-                obj = BaseModel(**obj)
                 obj.__dict__[argv[2]] = argv[3]
                 obj.save()
-                objs[key] = obj.to_dict()
-                storage = FileStorage()
-                for key, value in objs.items():
-                    storage.new(BaseModel(**value))
-                storage.save()
             except KeyError:
                 print("** no instance found **")
 
