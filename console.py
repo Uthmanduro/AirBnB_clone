@@ -151,19 +151,22 @@ class HBNBCommand(cmd.Cmd):
             # + Each arguments are separated by a space
             # + String argument with a space must be between quotes
             #
-            storage = FileStorage()
-            storage.reload()
-            objs = storage.all()
-            key = "{}.{}".format(argv[0], argv[1])
-            obj = objs[key]
-            obj = BaseModel(**obj)
-            obj.__dict__[argv[2]] = argv[3]
-            obj.save()
-            objs[key] = obj.to_dict()
-            storage = FileStorage()
-            for key, value in objs.items():
-                storage.new(BaseModel(**value))
-            storage.save()
+            try:
+                storage = FileStorage()
+                storage.reload()
+                objs = storage.all()
+                key = "{}.{}".format(argv[0], argv[1])
+                obj = objs[key]
+                obj = BaseModel(**obj)
+                obj.__dict__[argv[2]] = argv[3]
+                obj.save()
+                objs[key] = obj.to_dict()
+                storage = FileStorage()
+                for key, value in objs.items():
+                    storage.new(BaseModel(**value))
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
 
 
 if __name__ == '__main__':
