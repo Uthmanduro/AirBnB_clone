@@ -102,26 +102,10 @@ class HBNBCommand(cmd.Cmd):
             #
             # Destroy macthing instance following these stages:
             #
-            # + Create a duplicate copy of all existing objects in JSON file.
-            # + Delete the instance of storage (This simply wipe the private
-            #   dictionary ``__objects`` that has been preloaded into memory.
-            # + Delete matching instance in the duplicate copy.
-            # + Serialize the duplicate copy of storage to a fresh new
-            #   instance of storage USING ITS ``storage.new()`` method.
-            #
-            storage = FileStorage()
-            storage.reload()
             objs = storage.all()
             key = "{}.{}".format(argv[0], argv[1])
             try:
-                if len(objs) != 1:
-                    del objs[key]
-                    storage = FileStorage()
-                    for key, obj in objs.items():
-                        storage.new(obj)
-                else:
-                    del objs[key]
-                    objs = {}
+                del objs[key]
                 storage.save()
             except KeyError:
                 print("** no instance found **")
