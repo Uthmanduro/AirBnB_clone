@@ -5,19 +5,26 @@
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 from models.engine.file_storage import FileStorage
+
 
 class HBNBCommand(cmd.Cmd):
     """Creates the command interpreter class"""
     prompt = "(hbnb) "
-    valid_classes = ['BaseModel', 'User']
+    valid_classes = ['BaseModel', 'User', 'State', 'City',
+                     'Amenity', 'Place', 'Review']
 
     # Basic instance methods
     def emptyline(self):
         """Handles emptyline + ENTER from the interpreter"""
         pass
-    
+
     # Instance do_*() methods
     def do_quit(self, line):
         """
@@ -37,7 +44,8 @@ class HBNBCommand(cmd.Cmd):
         new <class> instance into a JSON file, then prints/return the
         instace id of new <class> instance.
 
-        valid <classes>: ['BaseModel', 'User']
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
@@ -53,8 +61,9 @@ class HBNBCommand(cmd.Cmd):
         """
         show <class> <instance id>: Prints the string representation
         of the instance with matching `instance id`.
-        
-        valid <classes>: ['BaseModel', 'User']
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
@@ -78,8 +87,9 @@ class HBNBCommand(cmd.Cmd):
         """
         destroy <class> <instance id>: Destroy the object instance
         of with the matching `instance id`.
-        
-        valid <classes>: ['BaseModel', 'User']
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
@@ -92,26 +102,10 @@ class HBNBCommand(cmd.Cmd):
             #
             # Destroy macthing instance following these stages:
             #
-            # + Create a duplicate copy of all existing objects in JSON file.
-            # + Delete the instance of storage (This simply wipe the private
-            #   dictionary ``__objects`` that has been preloaded into memory.
-            # + Delete matching instance in the duplicate copy.
-            # + Serialize the duplicate copy of storage to a fresh new
-            #   instance of storage USING ITS ``storage.new()`` method.
-            #
-            storage = FileStorage()
-            storage.reload()
             objs = storage.all()
             key = "{}.{}".format(argv[0], argv[1])
             try:
-                if len(objs) != 1:
-                    del objs[key]
-                    storage = FileStorage()
-                    for key, obj in objs.items():
-                        storage.new(obj)
-                else:
-                    del objs[key]
-                    objs = {}
+                del objs[key]
                 storage.save()
             except KeyError:
                 print("** no instance found **")
@@ -122,8 +116,9 @@ class HBNBCommand(cmd.Cmd):
         of all instances in the storage path, optional `[class]` name
         can be passed to print only a list of  matching object with
         the class.
-        
-        valid <classes>: ['BaseModel', 'User']
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) >= 1 and argv[0] not in self.valid_classes:
@@ -151,7 +146,8 @@ class HBNBCommand(cmd.Cmd):
         update <class> <instance id> <attribute name> <attribute value>:
         Updates matching instance with a new or existing attribute.
 
-        valid <classes>: ['BaseModel', 'User']
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
@@ -176,9 +172,6 @@ class HBNBCommand(cmd.Cmd):
                 key = "{}.{}".format(argv[0], argv[1])
                 obj = objs[key]
                 try:
-                    #var = obj.__dict__[argv[2]]
-                    #var = var.__class__.__name__
-                    #obj.__dict__[argv[2]] = eval("{}(\"{}\")".format(var, argv[3]))
                     Type = type(obj.__dict__[argv[2]])
                     obj.__dict__[argv[2]] = Type(argv[3])
                 except KeyError:
