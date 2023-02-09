@@ -11,6 +11,7 @@ from models.engine.file_storage import FileStorage
 class HBNBCommand(cmd.Cmd):
     """Creates the command interpreter class"""
     prompt = "(hbnb) "
+    valid_classes = ['BaseModel', 'User']
 
     # Basic instance methods
     def emptyline(self):
@@ -36,29 +37,29 @@ class HBNBCommand(cmd.Cmd):
         new <class> instance into a JSON file, then prints/return the
         instace id of new <class> instance.
 
-        valid <classes>: ['BaseModel']
+        valid <classes>: ['BaseModel', 'User']
         """
-        command = line.split()
-        if len(command) == 0:
+        argv = line.split()
+        if len(argv) == 0:
             print("** class name missing **")
-        elif command[0] !="BaseModel" or len(command) > 1:
+        elif len(argv) >= 1 and argv[0] not in self.valid_classes:
             print("** class doesn't exist **")
         else:
-            line = BaseModel()
-            line.save()
-            print(line.id)
+            obj = eval("{}()".format(argv[0]))
+            obj.save()
+            print(obj.id)
 
     def do_show(self, line):
         """
         show <class> <instance id>: Prints the string representation
         of the instance with matching `instance id`.
         
-        valid <classes>: ['BaseModel']
+        valid <classes>: ['BaseModel', 'User']
         """
         argv = line.split()
         if len(argv) == 0:
             print("** class name missing **")
-        elif len(argv) >= 1 and argv[0] != "BaseModel":
+        elif len(argv) >= 1 and argv[0] not in self.valid_classes:
             print("** class doesn't exist **")
         elif len(argv) == 1:
             print("** instance id missing **")
@@ -78,12 +79,12 @@ class HBNBCommand(cmd.Cmd):
         destroy <class> <instance id>: Destroy the object instance
         of with the matching `instance id`.
         
-        valid <classes>: ['BaseModel']
+        valid <classes>: ['BaseModel', 'User']
         """
         argv = line.split()
         if len(argv) == 0:
             print("** class name missing **")
-        elif len(argv) >= 1 and argv[0] != "BaseModel":
+        elif len(argv) >= 1 and argv[0] not in self.valid_classes:
             print("** class doesn't exist **")
         elif len(argv) == 1:
             print("** instance id missing **")
@@ -103,31 +104,46 @@ class HBNBCommand(cmd.Cmd):
             objs = storage.all()
             key = "{}.{}".format(argv[0], argv[1])
             try:
-                objs.pop(key, "None")
-                storage = FileStorage()
-                for key, obj in objs.items():
-                    storage.new(obj)
+                if len(objs) != 1:
+                    del objs[key]
+                    storage = FileStorage()
+                    for key, obj in objs.items():
+                        storage.new(obj)
+                else:
+                    del objs[key]
+                    objs = {}
                 storage.save()
             except KeyError:
                 print("** no instance found **")
 
     def do_all(self, line):
         """
-        all <class>: Prints a list containing string representation
-        of all instances in the storage path.
+        all [class]: Prints a list containing string representation
+        of all instances in the storage path, optional `[class]` name
+        can be passed to print only a list of  matching object with
+        the class.
         
-        valid <classes>: ['BaseModel']
+        valid <classes>: ['BaseModel', 'User']
         """
         argv = line.split()
-        if len(argv) >= 1 and argv[0] != "BaseModel":
+        if len(argv) >= 1 and argv[0] not in self.valid_classes:
             print("** class doesn't exist **")
-        else:
-            # Print a list containing all string representation...
+        elif len(argv) >= 1 and argv[0] in self.valid_classes:
+            # Print a list containing only specified class objects
             return_list = []
             storage.reload()
             objs = storage.all()
-            for key, objs in objs.items():
-                return_list.append(objs.__str__())
+            for key, obj in objs.items():
+                if key == ("" + argv[0] + "." + obj.__dict__["id"]):
+                    return_list.append(obj.__str__())
+            print(return_list)
+        else:
+            # Print a list containing all class objects in storage
+            return_list = []
+            storage.reload()
+            objs = storage.all()
+            for key, obj in objs.items():
+                return_list.append(obj.__str__())
             print(return_list)
 
     def do_update(self, line):
@@ -135,12 +151,12 @@ class HBNBCommand(cmd.Cmd):
         update <class> <instance id> <attribute name> <attribute value>:
         Updates matching instance with a new or existing attribute.
 
-        valid <classes>: ['BaseModel']
+        valid <classes>: ['BaseModel', 'User']
         """
         argv = line.split()
         if len(argv) == 0:
             print("** class name missing **")
-        elif len(argv) >= 1 and argv[0] != "BaseModel":
+        elif len(argv) >= 1 and argv[0] not in self.valid_classes:
             print("** class doesn't exist **")
         elif len(argv) == 1:
             print("** instance id missing **")
@@ -159,9 +175,14 @@ class HBNBCommand(cmd.Cmd):
                 objs = storage.all()
                 key = "{}.{}".format(argv[0], argv[1])
                 obj = objs[key]
-                var = obj.__dict__[argv[2]]
-                var = var.__class__.__name__
-                obj.__dict__[argv[2]] = eval("{}(\"{}\")".format(var, argv[3]))
+                try:
+                    #var = obj.__dict__[argv[2]]
+                    #var = var.__class__.__name__
+                    #obj.__dict__[argv[2]] = eval("{}(\"{}\")".format(var, argv[3]))
+                    Type = type(obj.__dict__[argv[2]])
+                    obj.__dict__[argv[2]] = Type(argv[3])
+                except KeyError:
+                    obj.__dict__[argv[2]] = argv[3]
                 obj.save()
             except KeyError:
                 print("** no instance found **")
