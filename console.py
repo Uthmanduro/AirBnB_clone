@@ -5,19 +5,26 @@
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 from models.engine.file_storage import FileStorage
+
 
 class HBNBCommand(cmd.Cmd):
     """Creates the command interpreter class"""
     prompt = "(hbnb) "
-    valid_classes = ['BaseModel', 'User']
+    valid_classes = ['BaseModel', 'User', 'State', 'City',
+                     'Amenity', 'Place', 'Review']
 
     # Basic instance methods
     def emptyline(self):
         """Handles emptyline + ENTER from the interpreter"""
         pass
-    
+
     # Instance do_*() methods
     def do_quit(self, line):
         """
@@ -37,7 +44,8 @@ class HBNBCommand(cmd.Cmd):
         new <class> instance into a JSON file, then prints/return the
         instace id of new <class> instance.
 
-        valid <classes>: ['BaseModel', 'User']
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
@@ -53,8 +61,9 @@ class HBNBCommand(cmd.Cmd):
         """
         show <class> <instance id>: Prints the string representation
         of the instance with matching `instance id`.
-        
-        valid <classes>: ['BaseModel', 'User']
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
@@ -78,8 +87,9 @@ class HBNBCommand(cmd.Cmd):
         """
         destroy <class> <instance id>: Destroy the object instance
         of with the matching `instance id`.
-        
-        valid <classes>: ['BaseModel', 'User']
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
@@ -122,8 +132,9 @@ class HBNBCommand(cmd.Cmd):
         of all instances in the storage path, optional `[class]` name
         can be passed to print only a list of  matching object with
         the class.
-        
-        valid <classes>: ['BaseModel', 'User']
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) >= 1 and argv[0] not in self.valid_classes:
@@ -151,7 +162,8 @@ class HBNBCommand(cmd.Cmd):
         update <class> <instance id> <attribute name> <attribute value>:
         Updates matching instance with a new or existing attribute.
 
-        valid <classes>: ['BaseModel', 'User']
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
         """
         argv = line.split()
         if len(argv) == 0:
