@@ -27,13 +27,15 @@ class FileStorage:
         """Sets in ``__objects`` the ``obj`` with key
         ``<obj class name>.id``"""
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects.update({key: obj.to_dict()})
+        self.__objects.update({key: obj})
 
     def save(self):
         """Serializes ``__objects`` to the JSON file ``__file_path``."""
         with open(self.__file_path, "w", encoding="utf-8") as fi:
-            if self.__objects is not None or self.__objects != {}:
-                json.dump(self.__objects, fi)
+            objs = {}
+            for key, obj in self.__objects.items():
+                objs.update({key: obj.to_dict()})
+            json.dump(objs, fi)
 
     def reload(self):
         """Deserializes the JSON file to ``__objects`` only if
@@ -41,7 +43,15 @@ class FileStorage:
         exception should be raised."""
         try:
             with open(self.__file_path, "r", encoding="utf-8") as fi:
-                self.__objects = json.loads(fi.read())
+                from models.base_model import BaseModel
+                from models.user import User
+                objs = json.loads(fi.read())
+                self.__objects = {}
+                for key, obj in objs.items():
+                    _class = obj["__class__"]
+                    _obj = eval("{}({})".format(_class, "**obj"))
+                    self.new(_obj)
+
         except FileNotFoundError:
             pass
         except json.decoder.JSONDecodeError:
