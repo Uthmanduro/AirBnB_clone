@@ -176,9 +176,6 @@ class HBNBCommand(cmd.Cmd):
                 key = "{}.{}".format(argv[0], argv[1])
                 obj = objs[key]
                 try:
-                    #var = obj.__dict__[argv[2]]
-                    #var = var.__class__.__name__
-                    #obj.__dict__[argv[2]] = eval("{}(\"{}\")".format(var, argv[3]))
                     Type = type(obj.__dict__[argv[2]])
                     obj.__dict__[argv[2]] = Type(argv[3])
                 except KeyError:
