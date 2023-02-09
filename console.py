@@ -152,7 +152,6 @@ class HBNBCommand(cmd.Cmd):
             # + String argument with a space must be between quotes
             #
             try:
-                storage = FileStorage()
                 storage.reload()
                 objs = storage.all()
                 key = "{}.{}".format(argv[0], argv[1])
