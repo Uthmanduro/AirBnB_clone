@@ -173,9 +173,9 @@ class HBNBCommand(cmd.Cmd):
                 obj = objs[key]
                 try:
                     Type = type(obj.__dict__[argv[2]])
-                    obj.__dict__[argv[2]] = Type(argv[3])
+                    obj.__dict__[argv[2]] = Type(argv[3].strip("\""))
                 except KeyError:
-                    obj.__dict__[argv[2]] = argv[3]
+                    obj.__dict__[argv[2]] = argv[3].strip("\"")
                 obj.save()
             except KeyError:
                 print("** no instance found **")
