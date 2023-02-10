@@ -1,0 +1,6 @@
+# All the items in this list will be ignored by git
+models/__pycache__/
+tests/tests_models/__pycache__/
+models/engine/__pycache__/
+*.swp
+file.json
