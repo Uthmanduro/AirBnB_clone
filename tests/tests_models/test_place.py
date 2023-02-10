@@ -80,6 +80,3 @@ class Test_Place(unittest.TestCase):
         self.assertEqual(type(user1), type(user2))
         self.assertEqual(user1.id, user2.id)
         self.assertEqual(user1.name, user2.name)
-
-if __name__ == "__main__":
-    unittests.main()

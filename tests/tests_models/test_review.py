@@ -71,6 +71,3 @@ class Test_Review(unittest.TestCase):
         self.assertEqual(user1.place_id, user2.place_id)
         self.assertEqual(user1.user_id, user2.user_id)
         self.assertEqual(user1.text, user2.text)
-
-if __name__ == "__main__":
-    unittests.main()
