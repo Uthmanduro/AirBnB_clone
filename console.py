@@ -3,6 +3,7 @@
 
 
 import cmd
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -179,6 +180,30 @@ class HBNBCommand(cmd.Cmd):
                 obj.save()
             except KeyError:
                 print("** no instance found **")
+
+    def parseline(self, line):
+        """
+        Parse every line before returning it back to the console.
+        Looking out for match such as the following for extra
+        processing:
+        + <class name>.all()
+        + <class name>.count()
+        + <class name>.show(<id>)
+        + <class name>.destroy(<id>)
+        + <class name>.update(<id>, <attribute name>, <attribute value>)
+        + <class name>.update(<id>, <dictionary representation>)
+        """
+        lone_commands = ['all', 'quit', 'EOF', 'help']
+        argv = line.split()
+        matched = re.search(r"\w+\.\w+\(", line)
+        if (len(argv) != 1 or argv[0] in lone_commands) and not matched:
+            # Do for commands that required arguements or
+            # commands that works alone.
+            return argv[0], "".join(argv[1:]), line
+        # Additional parsing for aliases listed in string doc.
+        if matched:
+            pass
+        return argv[0], "".join(argv[1:]), line
 
 
 if __name__ == '__main__':
