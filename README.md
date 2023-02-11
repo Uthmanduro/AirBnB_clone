@@ -18,7 +18,9 @@ for the command interpreter features:
 
 ## Clone this repository
 Clone the repository to your machine with the following:
-```$ git clone https://github.com/Uthmanduro/AirBnB_clone.git```
+```
+$ git clone https://github.com/Uthmanduro/AirBnB_clone.git
+```
 
 
 ## How to start the AirBnB Command Interpreter
@@ -33,7 +35,7 @@ For a start, the console had no intro screen, so the only visible
 changes you will noticed is the change of prompt:
 
 ```
-(hbnb)
+(hbnb) 
 ```
 
 
@@ -98,5 +100,46 @@ EOF  all  create  destroy  help  quit  show  update
         
 (hbnb) show BaseModel 8f8a68a6-eee8-42e4-a488-28200576ad32
 [BaseModel] (8f8a68a6-eee8-42e4-a488-28200576ad32) {'id': '8f8a68a6-eee8-42e4-a488-28200576ad32', 'created_at': datetime.datetime(2023, 2, 11, 13, 42, 25, 362754), 'updated_at': datetime.datetime(2023, 2, 11, 13, 42, 25, 362939)}
+(hbnb) 
+```
+
+
+### Using `update` command
+
+```
+(hbnb) help update
+
+        update <class> <instance id> <attribute name> <attribute value>:
+        Updates matching instance with a new or existing attribute.
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
+
+(hbnb) create User
+eba6a509-f540-4160-ab9d-22909fc56eee
+(hbnb) show User eba6a509-f540-4160-ab9d-22909fc56eee
+[User] (eba6a509-f540-4160-ab9d-22909fc56eee) {'id': 'eba6a509-f540-4160-ab9d-22909fc56eee', 'created_at': datetime.datetime(2023, 2, 11, 13, 54, 38, 842700), 'updated_at': datetime.datetime(2023, 2, 11, 13, 54, 38, 842777)}
+(hbnb) update User eba6a509-f540-4160-ab9d-22909fc56eee email "example@mail.com"(hbnb) show User eba6a509-f540-4160-ab9d-22909fc56eee
+[User] (eba6a509-f540-4160-ab9d-22909fc56eee) {'id': 'eba6a509-f540-4160-ab9d-22909fc56eee', 'created_at': datetime.datetime(2023, 2, 11, 13, 54, 38, 842700), 'updated_at': datetime.datetime(2023, 2, 11, 13, 55, 12, 343148), 'email': 'example@mail.com'}
+(hbnb) 
+```
+
+
+### Using `destroy` command
+
+```
+(hbnb) help destroy
+
+        destroy <class> <instance id>: Destroy the object instance
+        of with the matching `instance id`.
+
+        valid <classes>: ['BaseModel', 'User', 'State', 'City',
+                          'Amenity', 'Place', 'Review']
+        
+(hbnb) show User eba6a509-f540-4160-ab9d-22909fc56eee
+[User] (eba6a509-f540-4160-ab9d-22909fc56eee) {'id': 'eba6a509-f540-4160-ab9d-22909fc56eee', 'created_at': datetime.datetime(2023, 2, 11, 13, 54, 38, 842700), 'updated_at': datetime.datetime(2023, 2, 11, 13, 55, 12, 343148), 'email': 'example@mail.com'}
+(hbnb) destroy User eba6a509-f540-4160-ab9d-22909fc56eee
+(hbnb) show User eba6a509-f540-4160-ab9d-22909fc56eee
+** no instance found **
 (hbnb) 
 ```
