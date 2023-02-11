@@ -16,7 +16,7 @@ class Test_User(unittest.TestCase):
     def test_instance_uuid_is_unique(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         user1 = User()
         user2 = User()
@@ -25,7 +25,7 @@ class Test_User(unittest.TestCase):
     def test_instance_created_at_is_str(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         user1 = User()
         self.assertEqual(type(user1.created_at), datetime)
@@ -34,7 +34,7 @@ class Test_User(unittest.TestCase):
     def test_save_method(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         from time import sleep
         user1 = User()
@@ -45,7 +45,7 @@ class Test_User(unittest.TestCase):
     def test_string_representation(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         user1 = User()
         string = "[{}] ({}) {}".format(user1.__class__.__name__,
@@ -55,7 +55,7 @@ class Test_User(unittest.TestCase):
     def test_instance_dictionary(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         user1 = User()
         user1.email = "uthman@gmail.com"
@@ -71,7 +71,7 @@ class Test_User(unittest.TestCase):
     def test_new_instance_from_dictionary(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         user1 = User()
         model_json = user1.to_dict()
@@ -81,7 +81,7 @@ class Test_User(unittest.TestCase):
     def test_new_instance_datetime_variables(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         user1 = User()
         model_json = user1.to_dict()
@@ -92,7 +92,7 @@ class Test_User(unittest.TestCase):
     def test_new_instance_properties_against_old(self):
         """
         This method of this test class tests for exactly
-        what the name of the method reads. \ ' - ' /
+        what the name of the method reads.
         """
         user1 = User()
         user1.name = "New_Instance"
