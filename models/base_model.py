@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
-"""defines the class BaseModel"""
+"""
+Defines the class BaseModel being the first
+piece of the serialization/deserialization process.
+"""
+
 from datetime import datetime
 import uuid
 from models import storage
 
 
 class BaseModel:
-    """defines all common attributes/methods for other classes"""
+    """
+    Defines all common attributes/methods
+    for other classes. This class will be the first
+    piece of the serialization/deserialization process.
+    """
 
     def __init__(self, *args, **kwargs):
-        """initialize the instance attributes"""
+        """
+        Initialize the instance attributes.
+        """
 
         if len(kwargs) != 0:
             kwargs.pop('__class__', None)
@@ -25,17 +35,26 @@ class BaseModel:
 
     # basic class methods
     def __str__(self):
-        """return the string representation of an object"""
+        """
+        Return the string representation of an object.
+        """
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
                                      self.__dict__)
 
     def save(self):
-        """update the updated_at atrr with the current datetime"""
+        """
+        Update the updated_at atrr with the current datetime,
+        and then call on the storage save method to update
+        database.
+        """
         self.updated_at = datetime.now()
         storage.save()
 
     def to_dict(self):
-        """returns a dictionary containing all keys/values of __dict__"""
+        """
+        Returns a dictionary containing all
+        keys/values of __dict__.
+        """
         _dict = {"__class__": self.__class__.__name__}
         _dict.update(self.__dict__)
         _dict["created_at"] = self.created_at.isoformat()
