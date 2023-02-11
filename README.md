@@ -16,21 +16,25 @@ for the command interpreter features:
 + Destroy an object
 
 
-> Clone the repository to your machine with the following:
->
-> ```$ git clone https://github.com/Uthmanduro/AirBnB_clone.git```
+## Clone this repository
+Clone the repository to your machine with the following:
+```$ git clone https://github.com/Uthmanduro/AirBnB_clone.git```
 
 
 ## How to start the AirBnB Command Interpreter
 After cloning the repository, the interpreter can be started using:
 
-```$ ./console.py```
+```
+$ ./console.py
+```
 
 
 For a start, the console had no intro screen, so the only visible
 changes you will noticed is the change of prompt:
 
-```(hbnb) ```
+```
+(hbnb)
+```
 
 
 ## How to use the AirBnB Command Interpreter
