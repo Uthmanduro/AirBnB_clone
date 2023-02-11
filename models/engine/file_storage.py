@@ -26,8 +26,10 @@ class FileStorage:
     def new(self, obj):
         """Sets in ``__objects`` the ``obj`` with key
         ``<obj class name>.id``"""
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects.update({key: obj})
+        from models.base_model import BaseModel
+        if obj and isinstance(obj, BaseModel):
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            self.__objects.update({key: obj})
 
     def save(self):
         """Serializes ``__objects`` to the JSON file ``__file_path``."""
