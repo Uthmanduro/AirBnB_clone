@@ -10,7 +10,8 @@
 # No output means all files checked in the listed directories
 # are good.
 
-pycodestyle console.py
-pycodestyle ./models/*.py
-pycodestyle ./models/engine/*.py
-pycodestyle ./tests/tests_models/*.py
+# pycodestyle -v console.py
+pycodestyle -v ./models/*.py
+pycodestyle -v ./models/engine/*.py
+pycodestyle -v ./tests/tests_models/*.py
+pycodestyle -v *.py
