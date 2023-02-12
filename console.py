@@ -221,9 +221,13 @@ class HBNBCommand(cmd.Cmd):
                 obj_id = obj_id.replace("\"", "")
                 argv_dict = json.loads(argv_dict)
                 key = "{}.{}".format(_class, obj_id)
-                obj = objs[key]
-                obj.__dict__.update(argv_dict)
-                obj.save()
+                try:
+                    obj = objs[key]
+                    obj.__dict__.update(argv_dict)
+                    obj.save()
+                except KeyError:
+                    print("** no instance found **")
+
                 line = ""
                 return line, line, line
 
