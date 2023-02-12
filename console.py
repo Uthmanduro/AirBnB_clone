@@ -212,6 +212,21 @@ class HBNBCommand(cmd.Cmd):
             cmd, argv = argv.split("(", 1)  # ['command', 'args)']
             argv = argv.replace(")", '')  # 'args)' -> 'args'
 
+            matched = re.search(r"{.+}", argv)  # checking for dict definition
+            if matched:  # if dictionary exists in arguements
+                objs = storage.all()
+                import json
+                obj_id, argv_dict = argv.split(", ", 1)  # ['<id>', '<dict>']
+                argv_dict = argv_dict.replace("'", "\"")
+                obj_id = obj_id.replace("\"", "")
+                argv_dict = json.loads(argv_dict)
+                key = "{}.{}".format(_class, obj_id)
+                obj = objs[key]
+                obj.__dict__.update(argv_dict)
+                obj.save()
+                line = ""
+                return line, line, line
+
             if cmd == "count":  # handles <class>.count()
                 objs = storage.all()
                 count = 0
