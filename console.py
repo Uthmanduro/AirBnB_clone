@@ -208,22 +208,20 @@ class HBNBCommand(cmd.Cmd):
         # Additional parsing for aliases listed in string doc.
         # example: class.command(args)
         if matched:
-            argv = line.split(".")  # ['class', 'command(args)']
+            _class, argv = line.split(".", 1)  # ['class', 'command(args)']
+            cmd, argv = argv.split("(", 1)  # ['command', 'args)']
+            argv = argv.replace(")", '')  # 'args)' -> 'args'
 
-            strip_char = ['(', ')']  # strips braces
-            for char in strip_char:
-                argv[1] = argv[1].replace(char, '')
-
-            if argv[1] == "count":  # handles <class>.count()
+            if cmd == "count":  # handles <class>.count()
                 objs = storage.all()
                 count = 0
                 for key, obj in objs.items():
-                    if obj.__class__.__name__ == argv[0]:
+                    if obj.__class__.__name__ == _class:
                         count = count + 1
                 print(count)
                 line = ''
                 return line, line, line
-            return argv[1], argv[0], line
+            return cmd, _class + " " + " ".join(argv.split(", ")), line
 
         return argv[0], " ".join(argv[1:]), line
 
