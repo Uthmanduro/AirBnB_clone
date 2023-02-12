@@ -196,10 +196,10 @@ class HBNBCommand(cmd.Cmd):
         lone_commands = ['all', 'quit', 'EOF', 'help']
         argv = line.split()
         matched = re.search(r"\w+\.\w+\(", line)
-        
-        if len(argv) == 0: # Handles empty line
+
+        if len(argv) == 0:  # Handles empty line
             return line, line, line
-        
+
         if (len(argv) != 1 or argv[0] in lone_commands) and not matched:
             # Do for commands that required arguements or
             # commands that works alone.
@@ -209,12 +209,22 @@ class HBNBCommand(cmd.Cmd):
         # example: class.command(args)
         if matched:
             argv = line.split(".")  # ['class', 'command(args)']
-            
-            strip_char = ['(', ')']
+
+            strip_char = ['(', ')']  # strips braces
             for char in strip_char:
                 argv[1] = argv[1].replace(char, '')
+
+            if argv[1] == "count":  # handles <class>.count()
+                objs = storage.all()
+                count = 0
+                for key, obj in objs.items():
+                    if obj.__class__.__name__ == argv[0]:
+                        count = count + 1
+                print(count)
+                line = ''
+                return line, line, line
             return argv[1], argv[0], line
-        
+
         return argv[0], " ".join(argv[1:]), line
 
 
