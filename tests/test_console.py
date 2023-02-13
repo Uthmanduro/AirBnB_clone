@@ -24,6 +24,26 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue()
         self.assertIn("Documented commands", output)
 
+    def test_console_quit(self):
+        """
+        Testing the console helper method, being one of the
+        default available command that come with cmd.Cmd.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("quit")
+            output = f.getvalue()
+        self.assertIn("", output)
+
+    def test_console_EOF(self):
+        """
+        Testing the console helper method, being one of the
+        default available command that come with cmd.Cmd.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("EOF")
+            output = f.getvalue()
+        self.assertIn("", output)
+
     def test_create_and_show_on_all_instances(self):
         """
         Testing create and show command against creating
@@ -40,6 +60,39 @@ class TestHBNBCommand(unittest.TestCase):
                                                          obj_id))
                 output = f.getvalue()
                 self.assertIn(obj_id, output)
+                self.assertIn("created_at", output)
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("create")
+                output = f.getvalue()
+                self.assertIn("** class name missing **", output)
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("create Mymodel")
+                OB
+                output = f.getvalue()
+                self.assertIn("** class doesn't exist **", output)
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("show")
+                output = f.getvalue()
+                self.assertIn("** class name missing **", output)
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("show MyModel")
+                output = f.getvalue()
+                self.assertIn("** class doesn't exist **", output)
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("show {}".format(test_class))
+                output = f.getvalue()
+                self.assertIn("** instance id missing **", output)
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("show {} {}".format(test_class, 
+                                                         "1223445"))
+                output = f.getvalue()
+                self.assertIn("** no instance found **", output)
 
     def test_all_command_output(self):
         """
@@ -51,9 +104,27 @@ class TestHBNBCommand(unittest.TestCase):
         for test_class in all_class:
             with patch('sys.stdout', new=StringIO()) as f:
                 HBNBCommand().onecmd("create {}".format(test_class))
+                obj_id = f.getvalue()
                 HBNBCommand().onecmd("all")
                 output = f.getvalue()
                 self.assertIn(test_class, output)
+                self.assertIn(obj_id, output)
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("create {}".format(test_class))
+                obj_id = f.getvalue()
+                HBNBCommand().onecmd("all {}".format(test_class))
+                output = f.getvalue()
+                self.assertIn(test_class, output)
+                self.assertIn(obj_id, output)
+
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("create {}".format(test_class))
+                obj_id = f.getvalue()
+                HBNBCommand().onecmd("all MyModel")
+                output = f.getvalue()
+                self.assertIn("** class doesn't exist **", output)
 
     def test_destroy_command(self):
         """
