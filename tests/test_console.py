@@ -39,4 +39,18 @@ class TestHBNBCommand(unittest.TestCase):
                 HBNBCommand().onecmd("show {} {}".format(test_class,
                                                          obj_id))
                 output = f.getvalue()
-            self.assertIn(obj_id, output)
+                self.assertIn(obj_id, output)
+
+    def test_all_command_output(self):
+        """
+        This method of this test class tests for exactly
+        what the name of the method reads.
+        """
+        all_class = ['BaseModel', 'User', 'State', 'City',
+                     'Amenity', 'Place', 'Review']
+        for test_class in all_class:
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("create {}".format(test_class))
+                HBNBCommand().onecmd("all")
+                output = f.getvalue()
+                self.assertIn(test_class, output)
