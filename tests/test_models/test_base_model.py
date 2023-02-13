@@ -49,6 +49,13 @@ class Test_BaseModel(unittest.TestCase):
         base1.save()
         self.assertNotEqual(base1.created_at, base1.updated_at)
 
+    def test_BaseModel_save_method(self):
+        """
+        This method tests save method of the class
+        BaseModel.
+        """
+        BaseModel().save()
+
     def test_string_representation(self):
         """
         This method of this test class tests for exactly
