@@ -21,7 +21,7 @@ class FileStorage:
     # Public instance methods
     def all(self):
         """Simply return the dictionary ``__objects``"""
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """Sets in ``__objects`` the ``obj`` with key
@@ -29,13 +29,13 @@ class FileStorage:
         from models.base_model import BaseModel
         if obj and isinstance(obj, BaseModel):
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            self.__objects.update({key: obj})
+            FileStorage.__objects.update({key: obj})
 
     def save(self):
         """Serializes ``__objects`` to the JSON file ``__file_path``."""
-        with open(self.__file_path, "w", encoding="utf-8") as fi:
+        with open(FileStorage.__file_path, "w", encoding="utf-8") as fi:
             objs = {}
-            for key, obj in self.__objects.items():
+            for key, obj in FileStorage.__objects.items():
                 objs.update({key: obj.to_dict()})
             json.dump(objs, fi)
 
@@ -44,7 +44,7 @@ class FileStorage:
         ``__file_path`` exists, otherwise; do nothing and no
         exception should be raised."""
         try:
-            with open(self.__file_path, "r", encoding="utf-8") as fi:
+            with open(FileStorage.__file_path, "r", encoding="utf-8") as fi:
 
                 # import statements
                 from models.base_model import BaseModel
@@ -56,7 +56,7 @@ class FileStorage:
                 from models.review import Review
 
                 objs = json.loads(fi.read())
-                self.__objects = {}
+                FileStorage.__objects = {}
                 for key, obj in objs.items():
                     _class = obj["__class__"]
                     _obj = eval("{}({})".format(_class, "**obj"))
