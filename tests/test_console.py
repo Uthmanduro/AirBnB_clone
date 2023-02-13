@@ -3,7 +3,7 @@
 A unit test module for testing ``console.py`` module.
 """
 
-from console import HBNBCommand 
+from console import HBNBCommand
 import unittest
 from unittest.mock import patch
 from io import StringIO
@@ -22,5 +22,21 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help")
             output = f.getvalue()
-            print(output)
         self.assertIn("Documented commands", output)
+
+    def test_create_and_show_on_all_instances(self):
+        """
+        Testing create and show command against creating
+        an instance of BaseModel, User, State, City,
+        Amenity, Place, and Review.
+        """
+        all_class = ['BaseModel', 'User', 'State', 'City',
+                     'Amenity', 'Place', 'Review']
+        for test_class in all_class:
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("create {}".format(test_class))
+                obj_id = f.getvalue()
+                HBNBCommand().onecmd("show {} {}".format(test_class,
+                                                         obj_id))
+                output = f.getvalue()
+            self.assertIn(obj_id, output)
