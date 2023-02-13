@@ -46,10 +46,11 @@ class Test_FileStorage(unittest.TestCase):
         Tests ``reload`` method of the
         FileStorage class.
         """
-        FileStorage().reload()
-        initial_file = str(FileStorage().all())  # [1]
+        storage = FileStorage()
+        storage.reload()
+        initial_file = str(storage.all())  # [1]
         base1 = BaseModel()
         base1.save()
-        FileStorage().reload()
-        new_file = str(FileStorage().all())  # [1]
+        storage.reload()
+        new_file = str(storage.all())  # [1]
         self.assertNotEqual(initial_file, new_file)
