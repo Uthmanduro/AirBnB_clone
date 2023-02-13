@@ -69,7 +69,6 @@ class TestHBNBCommand(unittest.TestCase):
 
             with patch('sys.stdout', new=StringIO()) as f:
                 HBNBCommand().onecmd("create Mymodel")
-                OB
                 output = f.getvalue()
                 self.assertIn("** class doesn't exist **", output)
 
