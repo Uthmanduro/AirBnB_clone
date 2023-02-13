@@ -131,13 +131,16 @@ class TestHBNBCommand(unittest.TestCase):
         This method of this test class tests for exactly
         what the name of the method reads.
         """
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create BaseModel")
-            obj_id = f.getvalue()
-            HBNBCommand().onecmd("destroy BaseModel {}".format(obj_id))
-            HBNBCommand().onecmd("show BaseModel {}".format(obj_id))
-            output = f.getvalue()
-        self.assertIn("** no instance found **", output)
+        all_class = ['BaseModel', 'User', 'State', 'City',
+                     'Amenity', 'Place', 'Review']
+        for test_cless in all_class:
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("create BaseModel")
+                obj_id = f.getvalue()
+                HBNBCommand().onecmd("destroy BaseModel {}".format(obj_id))
+                HBNBCommand().onecmd("show BaseModel {}".format(obj_id))
+                output = f.getvalue()
+            self.assertIn("** no instance found **", output)
 
     def test_update_command(self):
         with patch('sys.stdout', new=StringIO()) as f:
